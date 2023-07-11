@@ -24,7 +24,9 @@
   "dependencies": {
     "gluegun": "^2.1.0",
     "node-fetch": "^2.6.11",
-    "request": "^2.88.2"
+    "npm": "^9.8.0",
+    "request": "^2.88.2",
+    "timeago.js": "^4.0.2"
   },
   "devDependencies": {
     "jest": "^23.6.0",
