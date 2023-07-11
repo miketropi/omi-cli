@@ -7,10 +7,17 @@ module.exports = {
     const {
       noteAPI,
       isAuth,
+      parameters,
       print: { success, error }
     } = toolbox
     const auth = await isAuth();
-
+    if(!auth) {
+      error(`Please login.`);
+      return;
+    }
     
+    const { user } = auth;
+
+    console.log(user, parameters);
   },
 };
