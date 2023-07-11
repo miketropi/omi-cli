@@ -33,8 +33,12 @@ module.exports = () => {
       }
     },
     NOTE_LIST: async (variables) => {
-      const Q = `query Notes {
-        notesConnection(orderBy: createdAt_DESC, first: 500, skip: 0) {
+      let _variables = {
+        search: '',
+        ...variables
+      }
+      const Q = `query Notes($search: String) {
+        notesConnection(orderBy: createdAt_DESC, first: 500, skip: 0, where: {_search: $search}) {
           edges {
             node {
               id
@@ -50,8 +54,8 @@ module.exports = () => {
       }`;
 
       try {
-        const result = await _Request(Q, variables);
-        
+        const result = await _Request(Q, _variables);
+
         return {
           notes: result.data.notesConnection.edges,
           total: result.data.notesConnection.aggregate.count

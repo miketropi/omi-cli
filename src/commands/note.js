@@ -54,7 +54,11 @@ module.exports = {
         break;
 
       case 'list':
-        const { notes, total } = await NOTE_LIST();
+        const { s } = parameters.options;
+        const { notes, total } = await NOTE_LIST({
+          search: s ?? ''
+        });
+
         if(!notes || notes.length == 0) {
           success(`No item.`);
           return;
@@ -71,16 +75,11 @@ module.exports = {
           tablePrint.push(Object.values(_n.node));
         })
 
-        info('---------------------------------');
-        success(`****** Had found ${ total } Note(s) ******`);
-        info('---------------------------------');
+        success(`****** Had found ${ total } Note(s)${ s ? ` with keyworks: "${ s }"` : '' } ****** \n`);
         table(
           tablePrint,
           { format: 'markdown' },
         )
-        break;
-
-      case 'search':
         break;
     }
   },
