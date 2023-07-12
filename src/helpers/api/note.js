@@ -65,6 +65,63 @@ module.exports = () => {
         return false;
       }
     },
+    NOTE_SHOW: async (variables) => {
+      const Q = `query Note($id: ID) {
+        note(where: {id: $id}) {
+          id
+          name
+          createDate
+          content
+          lastUpdated
+        }
+      }`;
+
+      try {
+        const result = await _Request(Q, variables);
+        return result.data.note;
+      } catch (e) {
+        console.error(e.message);
+        return false;
+      }
+    },
+    NOTE_EDIT: async function(variables) {
+      let Q = () => {
+        let { id, ...args } = variables;
+        let v = Object.keys(args).map(_k => `$${ _k }:String`).join(', ');
+        let d =  Object.keys(args).map(_k => `${ _k }: $${ _k }`).join(', ');
+        return `mutation NoteUpdate(${ v }, $id:ID) {
+          updateNote(
+            data: {${ d }}, 
+            where: {id: $id}
+          ) {
+            id
+          }
+        }`
+      }
+
+      try {
+        const result = await _Request(Q(), variables);
+        return result.data.updateNote.id;
+      } catch (e) {
+        console.error(e.message);
+        return false;
+      }
+    },
+    NOTE_DELETE: async function(variables) {
+      const Q = `mutation NoteDelete($id:ID) {
+        deleteNote(where: {id: $id}) {
+          id
+        }
+      }`;
+
+      try {
+        const result = await _Request(Q, variables);
+        return result.data.deleteNote.id;
+      } catch (e) {
+        console.error(e.message);
+        return false;
+      }
+    },
     NOTE_PUBLIC: async (variables) => {
       const Q = `mutation NotePublish($id:ID) {
         publishNote(where: {id: $id}) {
