@@ -74,7 +74,7 @@ module.exports = {
 
           const noteID = await NOTE_EDIT({
             id,
-            [editField]: value,
+            [editField]: readFile(value) ?? value,
             lastUpdated: user,
           });
 
